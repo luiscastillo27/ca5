@@ -1,18 +1,21 @@
 import { Component } from '@angular/core';
-import { ChatService } from '../..//services/chat.service';
+import { ChatService } from "../../providers/chat.service";
+
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
+  styles: []
 })
-export class LoginComponent{
+export class LoginComponent {
 
-  constructor( private _chatServices:ChatService ) {
+  constructor( public _cs: ChatService ) { }
 
-  }
+  ingresar( proveedor: string ){
+    console.log( proveedor );
 
-  public login( provedor:string ){
-    this._chatServices.login( provedor );
+    this._cs.login( proveedor );
+
   }
 
 }

@@ -1,0 +1,62 @@
+<app-menu></app-menu>
+
+<div class="container main-container">
+  <div class="row">
+
+    <div class="col-md-4">
+
+      <div *ngIf="marcadorSel" class="animated fadeIn fast">
+        <h5>Marcador</h5>
+        <hr>
+        <div class="form-group">
+          <label>Titulo</label>
+          <input type="text" class="form-control" name="title" placeholder="Titulo del marcador" [(ngModel)]="marcadorSel.title">
+        </div>
+
+        <div class="form-group">
+          <label>Descripcion</label>
+          <textarea name="desc" rows="5" cols="80" class="form-control" [(ngModel)]="marcadorSel.desc" placeholder="Descripcion del marcador"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Se puede mover?</label>
+          <select class="form-control" name="draggable" [(ngModel)]="draggable" (change)="cambiarDraggable()">
+            <option value="1">Si</option>
+            <option value="0">No</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn btn-outline-danger btn-block puntero" (click)="_maps.borrarMarcador(i); marcadorSel=null;">
+          Borrar marcador
+        </button>
+
+        <button type="button" class="btn btn-outline-primary btn-block" (click)="_maps.guardarMarcadores()">
+          Guardar cambios
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="col-md-8">
+      <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapClick)="clickMapa( $event )">
+        <agm-marker (markerClick)="clickMarcador(marcador, i)" (dragEnd)="dragEndMarcador( marcador , $event )" [markerDraggable]="marcador.draggable" [title]="marcador.title" [latitude]="marcador.lat" [longitude]="marcador.lng" *ngFor="let marcador of _maps.marcadores; let i = index">
+
+          <agm-snazzy-info-window>
+            <ng-template>
+              <h6 *ngIf="marcador.title">
+                  {{marcador.title}}
+              </h6>
+              <p *ngIf="marcador.desc">
+                  {{marcador.desc}}
+              </p>
+            </ng-template>
+          </agm-snazzy-info-window>
+
+        </agm-marker>
+      </agm-map>
+    </div>
+
+  </div>
+
+</div>

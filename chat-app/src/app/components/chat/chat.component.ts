@@ -1,39 +1,51 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatService } from '../../services/chat.service';
+
+import { ChatService } from "../../providers/chat.service";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
+  styles: []
 })
-export class ChatComponent implements OnInit{
+export class ChatComponent implements OnInit {
 
-  private mensaje:string;
-  private elemento:any;
+  mensaje: string = "";
+  elemento: any;
 
-  constructor( private _chatService:ChatService ) {
-    this._chatService.cargarMensajes().subscribe( () => {
-      setTimeout( ()=>{
-        this.elemento.scrollTop = this.elemento.scrollHeight;
-      },20)
-    });
-    this.mensaje = "";
+
+  constructor( public _cs: ChatService ) {
+
+    this._cs.cargarMensajes()
+            .subscribe( ()=>{
+
+              setTimeout( ()=>{
+                this.elemento.scrollTop = this.elemento.scrollHeight;
+              },20);
+
+
+            });
+
   }
 
   ngOnInit(){
     this.elemento = document.getElementById('app-mensajes');
   }
 
-  public enviarMensaje(){
-    if(this.mensaje.length > 0){
-      this._chatService.enviarMensaje( this.mensaje ).then( () => {
-          console.log("Mensaje enviado");
-          this.mensaje = "";
-      }).catch( error => {
-          console.log("Error al enviar mensaje", error );
-      });
-    } else {
+
+
+  enviar_mensaje(){
+    console.log( this.mensaje );
+
+    if( this.mensaje.length === 0 ){
       return;
     }
+
+    this._cs.agregarMensaje( this.mensaje )
+            .then( ()=>this.mensaje = "" )
+            .catch( (err)=>console.error('Error al enviar',  err ) );
+
+
+
   }
 
 }
