@@ -25,7 +25,7 @@ import { GaleriaComponent } from './components/galeria/galeria.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    JsonpModule
+    JsonpModule,
     APP_ROUTING
   ],
   providers: [
